@@ -1,0 +1,6 @@
+c:\dev\ChallengeOne\ChallengeOne\bin\Debug\ChallengeOne.exe.config
+c:\dev\ChallengeOne\ChallengeOne\obj\Debug\ChallengeOne.csprojResolveAssemblyReference.cache
+c:\dev\ChallengeOne\ChallengeOne\bin\Debug\ChallengeOne.exe
+c:\dev\ChallengeOne\ChallengeOne\bin\Debug\ChallengeOne.pdb
+c:\dev\ChallengeOne\ChallengeOne\obj\Debug\ChallengeOne.exe
+c:\dev\ChallengeOne\ChallengeOne\obj\Debug\ChallengeOne.pdb
