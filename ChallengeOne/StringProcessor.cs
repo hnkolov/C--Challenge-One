@@ -8,6 +8,10 @@ namespace ChallengeOne
 {
     class StringProcessor
     {
+        public static bool IsDigit(char character)
+        {
+            return character >= '0' && character <= '9';
+        }
         public static string ReadInput()
         {
             return Console.ReadLine().TrimEnd('\n');
@@ -18,15 +22,17 @@ namespace ChallengeOne
             int[] extractedInput = new int[input.Length];
             for (var i = 0; i < input.Length; i++)
             {
-                extractedInput[i] = input[i] - '0';
+                if (!IsDigit(input[i]))
+                    throw new Exception("Not a number.");
+                extractedInput[i] = Convert.ToInt32(input[i]);
             }
             return extractedInput;
         }
 
-        public static string InstructionsToString(int[] instructions)
+        public static string InstructionsToString(int[] sequence)
         {
             string stringOutput = "";
-            foreach (int instruction in instructions)
+            foreach (int instruction in sequence)
             {
                 stringOutput = stringOutput + instruction;
             }

@@ -8,53 +8,67 @@ namespace ChallengeOne
 {
     class InstructionProcessor
     {
-
+        private int[] sequence;
+        private int currentIndex, direction;
         private const int NumberOfInstructions = 5;
+        private Action[] steps;
 
-        int Mod(int dividend, int divisor)
+        private int Mod(int dividend, int divisor)
         {
             return (dividend + divisor) % divisor;
         }
 
-        bool IsFinished(int[] instructions, int currentIndex)
+        private bool IsFinished()
         {
-            return instructions[currentIndex] == 0;
+            return sequence[currentIndex] == 0;
         }
 
-        void DoOneStep(int[] instructions, ref int currentIndex, ref int direction)
+        private void Move()
         {
-            int instruction = instructions[currentIndex];
-            int previousInstruction = Mod((currentIndex - direction), instructions.Length);
-            switch (instruction)
-            {
-                case 1:
-                    break;
-
-                case 2:
-                    instructions[previousInstruction] = Mod(instructions[previousInstruction] + 1, NumberOfInstructions);
-                    break;
-
-                case 3:
-                    instructions[previousInstruction] = Mod(instructions[previousInstruction] - 1, NumberOfInstructions);
-                    break;
-
-                case 4:
-                    direction = -direction;
-                    break;
-            }
-            currentIndex = Mod(currentIndex + direction, instructions.Length);
+            currentIndex = Mod(currentIndex + direction, sequence.Length);
         }
 
-        string DetermineOutput(string input)
+        private void DoNothing()
         {
-            int[] sequence = new int[input.Length];
-            string stringOutput = "";
+            
+        }
+
+        private void IncrementPrevious()
+        {
+            int previousInstruction = Mod((currentIndex - direction), sequence.Length);
+            sequence[previousInstruction] = Mod(sequence[previousInstruction] + 1, NumberOfInstructions);
+        }
+
+        private void DecrementPrevious()
+        {
+            int previousInstruction = Mod((currentIndex - direction), sequence.Length);
+            sequence[previousInstruction] = Mod(sequence[previousInstruction] - 1, NumberOfInstructions);
+        }
+
+        private void ReverseDirection()
+        {
+            direction = -direction;
+        }
+
+        private void DoOneStep()
+        {
+            int instruction = sequence[currentIndex];
+
+            steps[instruction]();
+            Move();
+        }
+
+        private string DetermineOutput(string input)
+        {
+            string stringOutput;
+            sequence = new int[input.Length];
             sequence = StringProcessor.ExtractInput(input);
-            int currentIndex = 0;
-            int direction = 1;
-            while (!IsFinished(sequence,currentIndex))
+            currentIndex = 0;
+            direction = 1;
+            steps = new Action[] { null, DoNothing, IncrementPrevious, DecrementPrevious, ReverseDirection };
+            while (!IsFinished())
             {
-                DoOneStep(sequence, ref currentIndex, ref direction);
+                DoOneStep();
             }
             stringOutput = StringProcessor.InstructionsToString(sequence);
             return stringOutput;
@@ -65,11 +79,6 @@ namespace ChallengeOne
             string input;
             input = StringProcessor.ReadInput();
             Console.WriteLine(DetermineOutput(input));
-        }
-
-        bool Test()
-        {
-            return DetermineOutput("121") == "203";
         }
     }
 }
